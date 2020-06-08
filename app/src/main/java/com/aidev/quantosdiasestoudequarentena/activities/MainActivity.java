@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.aidev.quantosdiasestoudequarentena.Preferencias;
 import com.aidev.quantosdiasestoudequarentena.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -39,17 +40,23 @@ import static java.time.temporal.ChronoUnit.DAYS;
 public class MainActivity extends AppCompatActivity {
 
     private AdView mAdView;
-
     private CalendarView calendario;
     private LocalDate inicio, hoje;
 
+    private Preferencias preferencias;
 
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        preferencias = new Preferencias(getApplicationContext());
+
+        preparaExibicaoPersonalizada();
 
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
@@ -80,6 +87,11 @@ public class MainActivity extends AppCompatActivity {
                 inicio = LocalDate.of(year, month + 1, dayOfMonth);
 
 
+                hoje = LocalDate.now();
+                preferencias.salvarData(inicio, hoje);
+
+                preferencias.salvarString(inicio.toString());
+
                 fab.show();
 
 
@@ -92,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                hoje = LocalDate.now();
 
                 long daysBetween = DAYS.between(inicio, hoje);
                 long semanas = daysBetween / 7;
@@ -113,7 +124,10 @@ public class MainActivity extends AppCompatActivity {
 
                                     "\nNúmero de horas: " + horas
 
+
                     );
+
+                    preferencias.salvarDias(daysBetween, semanas, horas);
 
 
                     dialog.setCancelable(true);
@@ -122,7 +136,9 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
+
                             dialog.dismiss();
+                            preparaExibicaoPersonalizada();
 
                         }
                     });
@@ -162,6 +178,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void preparaExibicaoPersonalizada() {
+
+        if(preferencias.recuperarInicio() != null) {
+
+            Intent intent = new Intent(this, ActualInfoActivity.class);
+            startActivity(intent);
+
+        }
+
+
+
+
+
+
+
+
     }
 
 }
