@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">¿Cuántos días estoy en cuarentena?</string>
+    <string name="dia_inicial">Día qué empezó la cuarentena:</string>
+</resources>
