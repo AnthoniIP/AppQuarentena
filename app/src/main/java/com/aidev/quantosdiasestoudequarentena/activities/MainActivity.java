@@ -54,9 +54,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        preferencias = new Preferencias(getApplicationContext());
 
-        preparaExibicaoPersonalizada();
+        preferencias = new Preferencias(getApplicationContext());
 
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
@@ -153,8 +152,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        preparaExibicaoPersonalizada();
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -183,20 +184,16 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void preparaExibicaoPersonalizada() {
 
-        if(preferencias.recuperarInicio() != null) {
+        if (preferencias.recuperarInicio() != null) {
 
             Intent intent = new Intent(this, ActualInfoActivity.class);
             startActivity(intent);
 
+
         }
 
 
-
-
-
-
-
-
     }
+
 
 }
