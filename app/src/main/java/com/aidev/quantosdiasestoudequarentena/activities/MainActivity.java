@@ -4,6 +4,7 @@ package com.aidev.quantosdiasestoudequarentena.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -175,6 +176,15 @@ public class MainActivity extends AppCompatActivity {
 
             Intent intent = new Intent(this, AboutActivity.class);
             startActivity(intent);
+
+        } else if(id == R.id.remover_anuncios) {
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(
+                    "https://play.google.com/store/apps/details?id=com.aidev.quantosdiasestoudequarentenanoads"));
+            intent.setPackage("com.android.vending");
+            startActivity(intent);
+
 
         }
 

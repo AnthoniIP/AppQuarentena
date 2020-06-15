@@ -9,6 +9,18 @@
         app:showAsAction="always"
         >
 
+
+
+    </item>
+
+    <item
+
+        android:id="@+id/remover_anuncios"
+        android:title="Remover anúncios"
+        app:showAsAction="never"
+        >
+
+
     </item>
 
 </menu>

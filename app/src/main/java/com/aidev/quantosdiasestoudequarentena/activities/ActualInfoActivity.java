@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,9 +21,14 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
+import java.time.LocalDate;
+
+import static java.time.temporal.ChronoUnit.DAYS;
+
 public class ActualInfoActivity extends AppCompatActivity {
 
 
+    private LocalDate inicioData, hojeData;
     private AdView mAdView;
     private Preferencias preferencias;
     private TextView dias, horas, semanas, inicio;
@@ -56,10 +62,30 @@ public class ActualInfoActivity extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onStart() {
         super.onStart();
         atualizarInformacoes();
+
+        inicioData = LocalDate.parse(preferencias.recuperarString());
+
+
+        hojeData = LocalDate.now();
+
+        long daysBetween = DAYS.between(inicioData, hojeData);
+        long semanasD = daysBetween / 7;
+        long horasD = daysBetween * 24;
+
+        atualizarInformacoes();
+
+
+        dias.setText(String.valueOf(daysBetween));
+        horas.setText(String.valueOf(horasD));
+        semanas.setText(String.valueOf(semanasD));
+
+
+
     }
 
     @Override
@@ -108,6 +134,15 @@ public class ActualInfoActivity extends AppCompatActivity {
 
             Intent intent = new Intent(this, AboutActivity.class);
             startActivity(intent);
+
+        }else if(id == R.id.remover_anuncios) {
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(
+                    "https://play.google.com/store/apps/details?id=com.aidev.quantosdiasestoudequarentenanoads"));
+            intent.setPackage("com.android.vending");
+            startActivity(intent);
+
 
         }
 
